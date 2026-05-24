@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Track Order</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #e8562a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      width: 300px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .circle.done {
+      background: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+
+    .circle.pending {
+      background: white;
+      color: #ccc;
+    }
+
+    .line {
+      width: 2px;
+      height: 30px;
+      background: #ccc;
+      margin-left: 14px;
+    }
+
+    .line.done {
+      background: #28a745;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h3>Track Order</h3>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="circle done">✓</div>
+        <span class="label">Food is Cooking</span>
+      </div>
+
+      <div class="line done"></div>
+
+      <div class="step">
+        <div class="circle done">✓</div>
+        <span class="label">Out for Delivery</span>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="step">
+        <div class="circle pending">✓</div>
+        <span class="label">Delivered</span>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

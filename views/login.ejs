@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #e8562a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      width: 250px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #register{
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    #register :hover{
+      color: red;
+  
+    }
+
+  </style>
+</head>
+<body>
+
+  <form class="box" action="/login" method="post">
+    <h3>Login</h3>
+
+    <input type="email" required="True" name="email" placeholder="Email">
+    <input type="password" required="True" name="password" placeholder="Password">
+
+    <button>Submit</button>
+
+    <div id="register"><a href="/register">Don't have an account, Register now</a></div>
+  </form>
+
+</body>
+</html>

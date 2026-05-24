@@ -18,7 +18,6 @@ const UserDetails = new mongoose.Schema({
 
     password : {
         type : String,
-        unique : true,
     }
 })
 
