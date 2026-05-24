@@ -3,7 +3,6 @@ const MenuDetails = require("../models/menu")
 
 router.get('/', async(req,res) => {
     const items = await MenuDetails.find()
-
     res.json(items)
 })
 
