@@ -66,6 +66,24 @@
 
     .nav-links a:hover { color: var(--text); }
 
+    .logout {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .logout:hover { background: #ffb83d; transform: scale(1.03); }
+
     .cart-btn {
       background: var(--accent);
       color: #000;
@@ -642,6 +660,10 @@
     <li><a href="track">Track Order</a></li>
     <li><a href="/login">Login</a></li>
   </ul>
+  <div id="name">Hello <span><%= user ? user.name : 'Guest' %></span></div>
+  <button class="logout" onclick="logout()">
+    Logout
+  </button>
   <button class="cart-btn" onclick="openCart()">
     🛒 Cart <span id="cart-count">0</span>
   </button>
@@ -698,7 +720,7 @@
     <div class="cart-total"><span>Delivery Fee</span><span>₹29</span></div>
     <div class="cart-total"><span>Taxes (5%)</span><span id="tax-amount">₹0</span></div>
     <div class="cart-total grand"><span>Total</span><span id="grand-total">₹0</span></div>
-    <button class="checkout-btn" id="checkout-btn" onclick="placeOrder()">Place Order →</button>
+    <button class="checkout-btn" onclick="submitOrder(event)">Place Order →</button>
   </div>
 </div>
 
@@ -715,6 +737,12 @@
     <button class="modal-close-btn" onclick="closeModal()">Continue Shopping</button>
   </div>
 </div>
+
+<!-- Hidden form - body ke end mein -->
+<form action="/order/place" method="post" id="order-form">
+  <input type="hidden" id="items-input" name="items">
+  <input type="hidden" id="total-input" name="totalPrice">
+</form>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -851,18 +879,6 @@
     renderCart();
   }
 
-  function placeOrder() {
-    if (Object.keys(cart).length === 0) return;
-    const orderId = '#QB' + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById('order-id-display').textContent = orderId;
-    document.getElementById('order-modal').classList.add('open');
-    cart = {};
-    updateCartCount();
-    closeCart();
-    // reset all qty displays
-    document.querySelectorAll('[id^="qty-"]').forEach(el => el.textContent = '0');
-  }
-
   function closeModal() {
     document.getElementById('order-modal').classList.remove('open');
   }
@@ -873,6 +889,25 @@
     t.classList.add('show');
     clearTimeout(t._timer);
     t._timer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+   function submitOrder(e) {
+  e.preventDefault()
+  if (Object.keys(cart).length === 0) return;
+  
+  const sub = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+  const tax = Math.round(sub * 0.05);
+  const grand = sub + 29 + tax;
+  
+  document.getElementById('items-input').value = JSON.stringify(cart)
+  document.getElementById('total-input').value = grand
+  
+  document.getElementById('order-form').submit()
+  }
+
+  async function logout() {
+    await fetch('/logout', {method : 'POST'})
+    window.location.href = '/'
   }
 
   renderMenu(menuData);
