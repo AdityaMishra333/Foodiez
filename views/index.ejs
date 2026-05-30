@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Foodiez — Order Food</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" />
   <style>
     :root {
       --bg: #0f0e0c;
@@ -25,6 +26,10 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+    }
+
+    #hamburger{
+      display: none;
     }
 
     /* ── NAV ── */
@@ -52,8 +57,9 @@
 
     .nav-links {
       display: flex;
-      gap: 28px;
+      gap: 38px;
       list-style: none;
+      align-items: center;
     }
 
     .nav-links a {
@@ -647,6 +653,48 @@
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--surface); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    @media (max-width:700px) {
+
+    #hamburger {
+        display: block;
+        cursor: pointer;
+        font-size: 2rem;
+        color: white;
+      }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 4rem;
+        right: 1rem;
+        background: silver;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        z-index: 1000;
+      }
+
+      .nav-links a {
+        color: black;
+      }
+
+      .logout {
+        display: none;
+      }
+
+      .cart-btn {
+        display: none;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav-links.active, .logout.active, .cart-btn.active {
+        display: flex;
+      }
+    }
   </style>
 </head>
 <body>
@@ -654,19 +702,23 @@
 <!-- NAV -->
 <nav>
   <div class="logo">Food<span>iez</span></div>
-  <ul class="nav-links">
+
+  <div id="name">Hello <span><%= user ? user.name : 'Guest' %></span></div>
+  
+  <ul class="nav-links" id="nav-links">
     <li><a href="#menu">Menu</a></li>
     <li><a href="#">Offers</a></li>
     <li><a href="track">Track Order</a></li>
     <li><a href="/login">Login</a></li>
+
+    <button id="logout" class="logout" onclick="logout()">
+      Logout
+    </button>
+    <button id="cart-btn" class="cart-btn" onclick="openCart()">
+      🛒 Cart <span id="cart-count">0</span>
+    </button>
   </ul>
-  <div id="name">Hello <span><%= user ? user.name : 'Guest' %></span></div>
-  <button class="logout" onclick="logout()">
-    Logout
-  </button>
-  <button class="cart-btn" onclick="openCart()">
-    🛒 Cart <span id="cart-count">0</span>
-  </button>
+  <span id="hamburger" class="material-symbols-outlined">menu</span>
 </nav>
 
 <!-- HERO -->
@@ -909,6 +961,12 @@
     await fetch('/logout', {method : 'POST'})
     window.location.href = '/'
   }
+
+  document.getElementById("hamburger").addEventListener("click", function() {
+    document.getElementById("nav-links").classList.toggle("active");
+    document.getElementById("logout").classList.toggle("active");
+    document.getElementById("cart-btn").classList.toggle("active");
+  });
 
   renderMenu(menuData);
 </script>
