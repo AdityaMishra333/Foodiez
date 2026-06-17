@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial;
+      background: black;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      color: #f4a623;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: black;
+      padding: 24px 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border: 2px solid #f4a623;
+    }
+
+    .card h3 {
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #f4a623;
+      padding-bottom: 8px;
+      color: #f4a623;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: Arial;
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    button:hover { background: #0056b3; }
+
+    /* Orders section */
+    .stat-box {
+      background: #f4a623;
+      border-radius: 4px;
+      padding: 16px;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .stat-box .number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      display: block;
+    }
+
+    .stat-box .label {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Admin Panel</h1>
+
+  <div class="grid">
+
+    <!-- Item Edit -->
+    <div class="card">
+      <h3>Edit Item</h3>
+      <select name="itemId">
+        <% items.forEach(item => { %>
+            <option value="<%= item._id %>"><%= item.name %></option>
+        <% }) %>
+      </select>
+      <input type="text" placeholder="Item Name">
+      <input type="number" placeholder="Price">
+      <input type="text" placeholder="Category">
+      <textarea rows="3" placeholder="Description"></textarea>
+      <button>Update Item</button>
+    </div>
+
+    <!--  Add Offer -->
+    <div class="card">
+      <h3>Add Offer</h3>
+      <input name="specialOccasion" type="text" placeholder="Offer Title">
+      <input name="discountPercent" type="number" placeholder="Discount (%)">
+      <input name="minimumOrderValue" type="number" placeholder="minimum order value">
+      <input name="freeItem" type="text" placeholder="pizza or other food">
+      <input type="text" placeholder="Applicable On (item/category)">
+      <input type="date" placeholder="Expiry Date">
+      <button>Add Offer</button>
+
+      <% offers.forEach(offer => { %>
+        <p><%= offer.specialOccasion %> — <%= offer.discountPercent %>% off</p>
+      <% }) %>
+    </div>
+
+    <!-- Orders -->
+    <div class="card">
+      <h3>Orders Overview</h3>
+      <div class="stat-box">
+        <span class="number">--</span>
+        <span class="label">Total Orders</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">--</span>
+        <span class="label">Pending</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">--</span>
+        <span class="label">Delivered</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

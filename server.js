@@ -8,8 +8,14 @@ const app = express()
 const PORT = 3000;
 
 const UserDetails = require('./models/user')
+const AdminDetails = require('./models/admin')
 const Order = require('./models/order')
+const Menu = require('./models/menu')
+const Offer = require('./models/offer')
 const { findOne } = require('./models/menu')
+
+const adminMiddleware = require('./middleware/admin-auth')
+const offer = require('./models/offer')
 
 require('dotenv').config()
 mongoose.connect(process.env.MONGO_URI)
@@ -39,7 +45,8 @@ app.get('/',async(req,res,next)=>{
       user = null
     }
   }
-  res.render("index", {user})
+  const items = await Menu.find().lean()
+  res.render("index", {user, items})
 })
 
 app.get('/login', (req,res)=>{
@@ -87,6 +94,57 @@ app.post('/register', async(req,res)=>{
   })
 })
 
+app.get('/admin-register', (req, res) => {
+  res.render("admin-register")
+})
+
+app.post('/admin-register', async(req,res)=>{
+
+  let {email,name,password} = req.body
+
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, async (err, hash) => {
+      let CreatedAdmin = await AdminDetails.create({
+        name,
+        email,
+        password : hash
+      })
+      res.redirect("/admin-login")
+      console.log("admin created")
+      console.log(CreatedAdmin.name, CreatedAdmin.password)
+    })
+  })
+})
+
+app.get('/admin-login', (req, res) => {
+  res.render("admin-login")
+})
+
+app.post('/admin-login', async (req, res) => {
+  let { email, password } = req.body
+  const admin = await AdminDetails.findOne({ email })
+  if (!admin) return res.send("admin not found")
+
+  bcrypt.compare(password, admin.password, (err, result) => {
+    if (result) {
+      const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+        expiresIn: '1d'
+      })
+      res.cookie('token', token, { httpOnly: true })
+      res.redirect("/admin-panel")
+    } 
+    else {
+      res.send("incorrect password")
+    }
+  })
+})
+
+app.get("/admin-panel", adminMiddleware, async(req, res) => {
+  const items = await Menu.find()
+  const offers = await Offer.find()
+  res.render("admin-panel", {items, offers})
+})
+
 app.get('/track', (req,res)=> {
   const token = req.cookies.token
   if(!token) return res.send("you have to order some food")
@@ -117,6 +175,10 @@ app.post('/order/place' ,async(req,res) => {
   })
 
   res.redirect('/track')
+})
+
+app.get("/offers", (req,res) => {
+  res.render("offers")
 })
 
 app.post('/logout', (req,res) => {

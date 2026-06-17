@@ -707,7 +707,7 @@
   
   <ul class="nav-links" id="nav-links">
     <li><a href="#menu">Menu</a></li>
-    <li><a href="#">Offers</a></li>
+    <li><a href="/offers">Offers</a></li>
     <li><a href="track">Track Order</a></li>
     <li><a href="/login">Login</a></li>
 
@@ -723,12 +723,11 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-tag">Free delivery above ₹299</div>
   <h1>Hungry? <span>Order Now</span><br>Delivered Fast.</h1>
   <p>Fresh meals from the best local restaurants, right at your doorstep in under 30 minutes.</p>
+  <div class="hero-tag">Free delivery above ₹299</div>
   <div class="search-bar">
     <input type="text" id="search-input" placeholder="Search for pizza, biryani, burgers..." oninput="filterMenu()"/>
-    <button class="search-btn">🔍</button>
   </div>
 </section>
 
@@ -754,7 +753,7 @@
 
 <!-- FOOTER -->
 <footer>
-  Made with love by <span>Foodiez</span> &nbsp;|&nbsp; © 2025 All rights reserved
+  Created by <span>Aditya Mishra</span>  |  © 2026 All rights reserved
 </footer>
 
 <!-- CART OVERLAY -->
@@ -800,29 +799,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const menuData = [
-    { id:1, name:"Margherita Pizza", desc:"Classic tomato, mozzarella & fresh basil", price:249, cat:"pizza", emoji:"🍕", type:"veg" },
-    { id:2, name:"Pepperoni Pizza", desc:"Loaded with spicy pepperoni & cheese", price:329, cat:"pizza", emoji:"🍕", type:"nonveg" },
-    { id:3, name:"BBQ Chicken Pizza", desc:"Smoky BBQ sauce, grilled chicken, onions", price:359, cat:"pizza", emoji:"🍕", type:"nonveg" },
-    { id:4, name:"Classic Burger", desc:"Beef patty, lettuce, cheese, pickles", price:179, cat:"burger", emoji:"🍔", type:"nonveg" },
-    { id:5, name:"Veggie Burger", desc:"Crispy aloo tikki, veggies & special sauce", price:149, cat:"burger", emoji:"🍔", type:"veg" },
-    { id:6, name:"Zinger Burger", desc:"Crispy fried chicken with coleslaw", price:199, cat:"burger", emoji:"🍔", type:"nonveg" },
-    { id:7, name:"Chicken Biryani", desc:"Slow-cooked basmati with aromatic spices", price:259, cat:"biryani", emoji:"🍛", type:"nonveg" },
-    { id:8, name:"Veg Biryani", desc:"Garden fresh veggies in saffron rice", price:199, cat:"biryani", emoji:"🍛", type:"veg" },
-    { id:9, name:"Mutton Biryani", desc:"Tender mutton pieces in rich biryani", price:329, cat:"biryani", emoji:"🍛", type:"nonveg" },
-    { id:10, name:"Veg Fried Rice", desc:"Wok-tossed rice with vegetables & soy", price:159, cat:"chinese", emoji:"🥡", type:"veg" },
-    { id:11, name:"Chilli Chicken", desc:"Crispy chicken in spicy chilli sauce", price:229, cat:"chinese", emoji:"🍜", type:"nonveg" },
-    { id:12, name:"Paneer Manchurian", desc:"Fried paneer in tangy manchurian gravy", price:199, cat:"chinese", emoji:"🥡", type:"veg" },
-    { id:13, name:"Chocolate Cake", desc:"Rich dark chocolate layered cake", price:129, cat:"dessert", emoji:"🎂", type:"veg" },
-    { id:14, name:"Gulab Jamun", desc:"Soft dumplings soaked in sugar syrup", price:79, cat:"dessert", emoji:"🍮", type:"veg" },
-    { id:15, name:"Ice Cream (2 scoops)", desc:"Vanilla, chocolate or strawberry", price:99, cat:"dessert", emoji:"🍦", type:"veg" },
-    { id:16, name:"Cold Coffee", desc:"Creamy blended cold coffee with milk", price:89, cat:"drinks", emoji:"☕", type:"veg" },
-    { id:17, name:"Fresh Lime Soda", desc:"Refreshing lime soda with mint", price:59, cat:"drinks", emoji:"🥤", type:"veg" },
-    { id:18, name:"Mango Lassi", desc:"Thick creamy mango yogurt drink", price:79, cat:"drinks", emoji:"🥛", type:"veg" },
-  ];
-
   let cart = {};
-  let currentCat = 'all';
+  let currentCat = 'all'
+
+  const menuData = <%- JSON.stringify(items) %>;
 
   function renderMenu(items) {
     const grid = document.getElementById('menu-grid');
@@ -831,7 +811,7 @@
       return;
     }
     grid.innerHTML = items.map(item => `
-      <div class="food-card" id="card-${item.id}">
+      <div class="food-card" id="card-${item._id}">
         <div class="food-img">${item.emoji}</div>
         <div class="food-info">
           <span class="${item.type === 'veg' ? 'badge-veg' : 'badge-nonveg'}">${item.type === 'veg' ? '● Veg' : '● Non-Veg'}</span>
@@ -840,9 +820,9 @@
           <div class="food-footer">
             <div class="food-price"><sup>₹</sup>${item.price}</div>
             <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
-              <div class="qty-num" id="qty-${item.id}">${cart[item.id] ? cart[item.id].qty : 0}</div>
-              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+              <button class="qty-btn" onclick="changeQty('${item._id}', -1)">−</button>
+              <div class="qty-num" id="qty-${item._id}">${cart[item._id] ? cart[item._id].qty : 0}</div>
+              <button class="qty-btn" onclick="changeQty('${item._id}', 1)">+</button>
             </div>
           </div>
         </div>
@@ -862,13 +842,15 @@
   function applyFilters() {
     const q = document.getElementById('search-input').value.toLowerCase();
     let items = menuData;
-    if (currentCat !== 'all') items = items.filter(i => i.cat === currentCat);
+    // Fix: cat ki jagah category
+    if (currentCat !== 'all') items = items.filter(i => i.category === currentCat);
     if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q));
     renderMenu(items);
   }
 
   function changeQty(id, delta) {
-    const item = menuData.find(i => i.id === id);
+    // Fix: _id use kiya
+    const item = menuData.find(i => i._id === id);
     if (!cart[id]) cart[id] = { ...item, qty: 0 };
     cart[id].qty = Math.max(0, cart[id].qty + delta);
     if (cart[id].qty === 0) delete cart[id];
@@ -912,9 +894,9 @@
           <div class="cart-item-price">₹${item.price} × ${item.qty} = ₹${item.price * item.qty}</div>
         </div>
         <div class="cart-item-qty">
-          <button class="cq-btn" onclick="cartQty(${item.id}, -1)">−</button>
+          <button class="cq-btn" onclick="cartQty('${item._id}', -1)">−</button>
           <span>${item.qty}</span>
-          <button class="cq-btn" onclick="cartQty(${item.id}, 1)">+</button>
+          <button class="cq-btn" onclick="cartQty('${item._id}', 1)">+</button>
         </div>
       </div>
     `).join('');
@@ -943,18 +925,18 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2000);
   }
 
-   function submitOrder(e) {
-  e.preventDefault()
-  if (Object.keys(cart).length === 0) return;
-  
-  const sub = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
-  const tax = Math.round(sub * 0.05);
-  const grand = sub + 29 + tax;
-  
-  document.getElementById('items-input').value = JSON.stringify(cart)
-  document.getElementById('total-input').value = grand
-  
-  document.getElementById('order-form').submit()
+  function submitOrder(e) {
+    e.preventDefault()
+    if (Object.keys(cart).length === 0) return;
+    
+    const sub = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+    const tax = Math.round(sub * 0.05);
+    const grand = sub + 29 + tax;
+    
+    document.getElementById('items-input').value = JSON.stringify(cart)
+    document.getElementById('total-input').value = grand
+    
+    document.getElementById('order-form').submit()
   }
 
   async function logout() {

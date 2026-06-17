@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Register</title>
   <style>
     body {
       font-family: Arial;
-      background: #e8562a;
+      background: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -14,7 +14,7 @@
     }
 
     .box {
-      background: white;
+      background: #f4a623;
       padding: 20px;
       width: 250px;
       border-radius: 6px;
@@ -43,15 +43,6 @@
       background: #0056b3;
     }
 
-    #register{
-      width: 100%;
-      margin-top: 15px;
-    }
-
-    #register :hover{
-      color: red;
-    }
-
     #admin{
       width: 100%;
       margin-top: 15px;
@@ -61,8 +52,7 @@
       color: red;
     }
 
-
-    @media (max-width:700px){
+        @media (max-width:700px){
       body {
         align-items: center;
       }
@@ -77,18 +67,14 @@
 </head>
 <body>
 
-  <form class="box" action="/login" method="post">
-    <h3>Login</h3>
+  <form class="box" action="/admin-register" method="post">
+    <h3>Register as Admin</h3>
 
+    <input type="text" required="True" name="name" placeholder="Name">
     <input type="email" required="True" name="email" placeholder="Email">
     <input type="password" required="True" name="password" placeholder="Password">
 
-    <button>Submit</button>
-
-    <div id="register"><a href="/register">Don't have an account, Register now</a></div>
-    <div id="admin"><a href="/admin-login">Login as Admin</a></div>
-
-    
+    <button>Create Account</button>
   </form>
 
 </body>
