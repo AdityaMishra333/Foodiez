@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial;
-      background: #e8562a;
+      background: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -14,7 +14,7 @@
     }
 
     .box {
-      background: white;
+      background: #f4a623;
       padding: 20px;
       width: 250px;
       border-radius: 6px;
@@ -77,17 +77,13 @@
 </head>
 <body>
 
-  <form class="box" action="/login" method="post">
-    <h3>Login</h3>
+  <form class="box" action="/admin-login" method="post">
+    <h3>Login as Admin</h3>
 
     <input type="email" required="True" name="email" placeholder="Email">
     <input type="password" required="True" name="password" placeholder="Password">
 
     <button>Submit</button>
-
-    <div id="register"><a href="/register">Don't have an account, Register now</a></div>
-    <div id="admin"><a href="/admin-login">Login as Admin</a></div>
-
     
   </form>
 

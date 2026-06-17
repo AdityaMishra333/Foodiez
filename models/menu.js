@@ -13,13 +13,19 @@ const MenuDetails = new mongoose.Schema({
         type : String,
         required : true
     },
-    image : {
+    type : {
         type : String,
         required : true
     },
+    desc : {
+        type : String,
+        required : true
+    },
+    emoji : {
+        type : String,
+    },
     available : {
         type : Boolean,
-        required : true
     }
 })
 
