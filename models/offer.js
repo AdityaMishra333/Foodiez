@@ -15,31 +15,8 @@ const OfferDetails = new mongoose.Schema({
     }],
 
     freeItem : {
-            food : [{
-                name : {
-                    type : String
-                },
-                quantity : {
-                    type : Number
-                }
-            }],
-            colddrink : [{
-                name : {
-                    type : String
-                },
-                quantity : {
-                    type : Number
-                }
-            }],
-            dessert : [{
-                name : {
-                    type : String
-                },
-                quantity : {
-                    type : Number
-                }
-            }]
-        },
+        type : String
+    },
 
     minimumOrderValue : {
         type : Number
@@ -51,6 +28,14 @@ const OfferDetails = new mongoose.Schema({
 
     discountPercent : {
         type : Number
+    },
+
+    applicableOn : {
+        type : String
+    },
+
+    expiryDate : {
+        type : Date
     }
 })
 

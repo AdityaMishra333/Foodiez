@@ -20,6 +20,10 @@
             min-height: 100vh;
         }
 
+        span{
+            color: rgb(255, 149, 0);
+        }
+
         nav {
             background-color: #16213e;
             padding: 15px 40px;
@@ -318,83 +322,48 @@
 <body>
 
     <nav>
-        <a href="/" class="logo">Foodi<span>ez</span></a>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/menu">Menu</a></li>
-            <li><a href="/offers" class="active">Offers</a></li>
-            <li><a href="/cart">Cart</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-        </ul>
+        <a href="/" class="logo">Food<span>iez</span></a>
+        <h1><span>Offers</span> Section</h1>
     </nav>
 
     <div class="page-header">
-        <h1>🔥 Hot Offers</h1>
-        <p>Grab the best deals before they expire!</p>
+        <p>Grab the best deals before they expire</p>
         <div class="divider"></div>
     </div>
 
     <div class="offers-section">
 
-        <p class="section-label">Featured Deal</p>
-        <div class="featured-offer">
-            <div class="offer-badge">30% <br> OFF</div>
-            <div class="offer-info">
-                <h2>Grand Welcome Offer</h2>
-                <p>Get flat 30% off on your first order. Valid on all menu items above ₹299. No minimum order value required for new users.</p>
-                <div class="offer-code">
-                    <span>WELCOME30</span>
-                    <button class="btn-copy" onclick="copyCode('WELCOME30', this)">Copy Code</button>
-                </div>
+        <% if (offers.length === 0) { %>
+            <p class="section-label">No offers right now — check back soon!</p>
+        <% } else { %>
+            <p class="section-label">Current Offers</p>
+            <div class="offers-row-2">
+                <% offers.forEach(offer => { %>
+                    <div class="offer-card">
+                        <div class="corner-badge"><%= offer.discountPercent %>% OFF</div>
+                        <p class="card-tag">Deal</p>
+                        <h3><%= offer.specialOccasion %> Offer</h3>
+                        <p>
+                            <%= offer.discountPercent %>% off
+                            <% if (offer.minimumOrderValue) { %>
+                                on orders above ₹<%= offer.minimumOrderValue %>
+                            <% } %>
+                            <% if (offer.applicableOn) { %>
+                                on <%= offer.applicableOn %>
+                            <% } %>
+                            <% if (offer.freeItem) { %>
+                                + free <%= offer.freeItem %>
+                            <% } %>
+                        </p>
+                        <% if (offer.expiryDate) { %>
+                            <div class="code-row">
+                                <span>Valid till <%= new Date(offer.expiryDate).toLocaleDateString() %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
             </div>
-        </div>
-
-        <p class="section-label">Limited Time Offers</p>
-        <div class="offers-row-2">
-            <div class="offer-card">
-                <div class="corner-badge">20% OFF</div>
-                <p class="card-tag">🕐 Limited</p>
-                <h3>Weekend Special</h3>
-                <p>Order on Saturday or Sunday and save big. Valid on orders above ₹199.</p>
-                <div class="code-row">
-                    <span>WEEKEND20</span>
-                    <button class="btn-copy" onclick="copyCode('WEEKEND20', this)">Copy</button>
-                </div>
-            </div>
-            <div class="offer-card">
-                <div class="corner-badge">15% OFF</div>
-                <p class="card-tag">🕐 Limited</p>
-                <h3>Combo Bonanza</h3>
-                <p>Order any combo meal and get 15% off. Available all week on selected items.</p>
-                <div class="code-row">
-                    <span>COMBO15</span>
-                    <button class="btn-copy" onclick="copyCode('COMBO15', this)">Copy</button>
-                </div>
-            </div>
-        </div>
-
-        <p class="section-label">More Savings</p>
-        <div class="offers-row-3">
-            <div class="offer-card-sm">
-                <p class="sm-tag">🎉 Deal</p>
-                <h4>Late Night Bites</h4>
-                <p>Ordering after 9 PM? Enjoy 10% off on all orders.</p>
-                <span class="sm-code">NIGHT10</span>
-            </div>
-            <div class="offer-card-sm">
-                <p class="sm-tag">🎉 Deal</p>
-                <h4>Student Deal</h4>
-                <p>Use this code for 12% off. Made for all the broke students out there.</p>
-                <span class="sm-code">STUDENT12</span>
-            </div>
-            <div class="offer-card-sm">
-                <p class="sm-tag">🎉 Deal</p>
-                <h4>Refer a Friend</h4>
-                <p>Refer a friend and both of you get ₹50 off your next order.</p>
-                <span class="sm-code">REFER50</span>
-            </div>
-        </div>
+        <% } %>
 
     </div>
 

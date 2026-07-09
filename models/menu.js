@@ -19,7 +19,6 @@ const MenuDetails = new mongoose.Schema({
     },
     desc : {
         type : String,
-        required : true
     },
     emoji : {
         type : String,

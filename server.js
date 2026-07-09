@@ -31,6 +31,7 @@ app.use(cookieparser())
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/menu', require("./routes/menu"))
 app.use('/api/orders', require("./routes/orders"))
+app.use('/admin', require("./routes/admin-routes"))
 
 app.get('/',async(req,res,next)=>{
   
@@ -140,9 +141,16 @@ app.post('/admin-login', async (req, res) => {
 })
 
 app.get("/admin-panel", adminMiddleware, async(req, res) => {
+
   const items = await Menu.find()
   const offers = await Offer.find()
-  res.render("admin-panel", {items, offers})
+  const orders = await Order.find()
+
+  const totalOrders = orders.length
+  const pending = orders.filter(o => o.status === 'pending').length
+  const delivered = orders.filter(o => o.status === 'delivered').length
+
+  res.render("admin-panel", {items, offers, orders, totalOrders, pending, delivered})
 })
 
 app.get('/track', (req,res)=> {
@@ -177,8 +185,9 @@ app.post('/order/place' ,async(req,res) => {
   res.redirect('/track')
 })
 
-app.get("/offers", (req,res) => {
-  res.render("offers")
+app.get("/offers", async (req,res) => {
+  const offers = await Offer.find()
+  res.render("offers", { offers })
 })
 
 app.post('/logout', (req,res) => {
