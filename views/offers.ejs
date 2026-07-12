@@ -44,22 +44,14 @@
             color: #ffffff;
         }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 30px;
-        }
-
-        nav ul li a {
+        nav h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
             text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.2s;
         }
 
-        nav ul li a:hover,
-        nav ul li a.active {
+        nav h1 span {
             color: #f97316;
         }
 
@@ -305,6 +297,7 @@
         }
 
         footer {
+            width: 100%;
             background-color: #16213e;
             border-top: 2px solid #f97316;
             text-align: center;
@@ -312,10 +305,81 @@
             color: #a0a0b0;
             font-size: 0.85rem;
             margin-top: 40px;
+            position: fixed;
+            bottom: 10px;
         }
 
         footer span {
             color: #f97316;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+                text-align: center;
+            }
+
+            nav h1{
+                font-size: 1.4rem;
+            }
+
+            .page-header {
+                padding: 35px 20px 25px;
+            }
+
+            .page-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .offers-section {
+                padding: 25px 20px;
+            }
+
+            .featured-offer {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 25px;
+                gap: 18px;
+            }
+
+            .featured-offer .offer-badge {
+                font-size: 1.5rem;
+                padding: 14px 22px;
+            }
+
+            .offers-row-2,
+            .offers-row-3 {
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 35px;
+            }
+
+            .offer-code,
+            .code-row {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav .logo {
+                font-size: 1.4rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .page-header p {
+                font-size: 0.85rem;
+            }
+
+            .featured-offer .offer-info h2 {
+                font-size: 1.2rem;
+            }
+
+            .btn-copy {
+                width: 100%;
+            }
         }
     </style>
 </head>
