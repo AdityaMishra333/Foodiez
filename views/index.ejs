@@ -267,10 +267,7 @@
       width: 100%;
       height: 160px;
       object-fit: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
+      display: block;
       background: var(--surface);
     }
 
@@ -441,10 +438,13 @@
       gap: 12px;
     }
 
-    .cart-item-emoji {
-      font-size: 32px;
+    .cart-item-img {
       width: 48px;
-      text-align: center;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--surface);
+      flex-shrink: 0;
     }
 
     .cart-item-info { flex: 1; }
@@ -811,7 +811,7 @@
     }
     grid.innerHTML = items.map(item => `
       <div class="food-card" id="card-${item._id}">
-        <div class="food-img">${item.emoji}</div>
+        <img class="food-img" src="${item.image || '/images/placeholder.svg'}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
         <div class="food-info">
           <span class="${item.type === 'veg' ? 'badge-veg' : 'badge-nonveg'}">${item.type === 'veg' ? '● Veg' : '● Non-Veg'}</span>
           <div class="food-name">${item.name}</div>
@@ -887,7 +887,7 @@
     footer.style.display = 'block';
     list.innerHTML = items.map(item => `
       <div class="cart-item">
-        <div class="cart-item-emoji">${item.emoji}</div>
+        <img class="cart-item-img" src="${item.image || '/images/placeholder.svg'}" alt="${item.name}" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
           <div class="cart-item-price">₹${item.price} × ${item.qty} = ₹${item.price * item.qty}</div>

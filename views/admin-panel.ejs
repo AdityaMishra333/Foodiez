@@ -101,6 +101,29 @@
       border-color: var(--accent);
     }
 
+    .field-label {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin-right: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     button {
       width: 100%;
       padding: 10px;
@@ -156,7 +179,7 @@
 
     <!-- Add new Item -->
     <div class="card">
-      <form action="/admin/new-item" method="post">
+      <form action="/admin/new-item" method="post" enctype="multipart/form-data">
 
         <h3>Add Item</h3>
 
@@ -175,7 +198,10 @@
         </select>
 
         <input placeholder="discription" name="desc" type="text" required>
-        <input placeholder="emoji" name="emoji" type="text">
+
+        <label class="field-label">Item image
+          <input name="image" type="file" accept="image/*">
+        </label>
 
         <button>Add Item</button>
 
@@ -184,7 +210,7 @@
 
     <!-- Item Edit -->
     <div class="card">
-      <form action="/admin/items" method="post">
+      <form action="/admin/items" method="post" enctype="multipart/form-data">
 
           <h3>Edit Item</h3>
         <select name="itemId">
@@ -206,8 +232,10 @@
           <% }) %>
         </select>
 
-        <input placeholder="emoji" name="emoji" type="text">
-        
+        <label class="field-label">New image (leave empty to keep current)
+          <input name="image" type="file" accept="image/*">
+        </label>
+
         <textarea name="desc" rows="3" placeholder="Description"></textarea>
         
       <button>Update Item</button>
@@ -270,6 +298,26 @@
     </div>
 
   </div>
+
+  <script>
+    // prefill the Edit Item form with the selected item's current values
+    const menuItems = <%- JSON.stringify(items) %>;
+    const editForm = document.querySelector('form[action="/admin/items"]');
+    const editSelect = editForm.querySelector('select[name="itemId"]');
+
+    function prefillEdit() {
+      const item = menuItems.find(i => i._id === editSelect.value);
+      if (!item) return;
+      editForm.querySelector('input[name="name"]').value = item.name || '';
+      editForm.querySelector('input[name="price"]').value = item.price != null ? item.price : '';
+      editForm.querySelector('select[name="type"]').value = item.type || 'veg';
+      editForm.querySelector('select[name="category"]').value = item.category || 'Indian';
+      editForm.querySelector('textarea[name="desc"]').value = item.desc || '';
+    }
+
+    editSelect.addEventListener('change', prefillEdit);
+    prefillEdit();
+  </script>
 
 </body>
 </html>
